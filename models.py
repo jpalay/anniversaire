@@ -1,4 +1,4 @@
-from application import db
+import application.db as db
 
 class Media(db.Model):
 	id = db.Column(db.Integer, primary_key=True)

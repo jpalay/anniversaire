@@ -1,8 +1,7 @@
 import os
-
 from flask import Flask, url_for, render_template, request, redirect
 from flask.ext.sqlalchemy import SQLAlchemy
-from models import *
+from models import Page
 
 app = Flask(__name__)
 print 1
