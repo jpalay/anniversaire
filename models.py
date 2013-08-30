@@ -1,4 +1,4 @@
-import application.db as db
+from momdad import db
 
 class Media(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
