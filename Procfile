@@ -1,1 +1,1 @@
-web: gunicorn momdad:app
+web: gunicorn application:app
