@@ -5,7 +5,8 @@ from flask.ext.sqlalchemy import SQLAlchemy
 
 ## configuration
 app = Flask(__name__)
-app.config["SQLALCHEMY_DATABASE_URI"] = os.environ['DATABASE_URL']
+# app.config["SQLALCHEMY_DATABASE_URI"] = os.environ['DATABASE_URL']
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/test.db'
 db = SQLAlchemy(app)
 
 
@@ -14,9 +15,15 @@ db = SQLAlchemy(app)
 def home():
 	return "Hello"
 
+@app.route('/add', methods=['POST'])
+def add_entry():
+	if not session.get('logged_in'):
+		abort(401)
+
+
 @app.route('/<page_slug>')
-def show_page(page_slug, page=None):
-	page = Page.query.filter(Page.slug == page_slug).first()
+def show_page():
+	page = Page.query.filter_by(slug=page_slug).first()
 	if page is None:
 		return redirect(url_for("home"))
 	return render_template("test.html", page=page)
