@@ -1,13 +1,7 @@
 import os
-from flask import Flask, redirect, url_for, render_template
-from flask.ext.sqlalchemy import SQLAlchemy
-
-
-## configuration
-app = Flask(__name__)
-app.config["SQLALCHEMY_DATABASE_URI"] = os.environ['DATABASE_URL']
-db = SQLAlchemy(app)
-
+from flask import redirect, url_for, render_template
+from settings import app, db
+from models import *
 
 # Views
 @app.route('/')
@@ -20,40 +14,6 @@ def show_page(page_slug, page=None):
 	if page is None:
 		return redirect(url_for("home"))
 	return render_template("test.html", page=page)
-
-## Models
-
-class Media(db.Model):
-	id = db.Column(db.Integer, primary_key=True)
-	url = db.Column(db.String(200))
-	page = db.Column(db.Integer, db.ForeignKey('page.id'))
-
-	def __init__(self, url, page):
-		self.url = url
-		self.page = page
-
-	def __repr__(self):
-		return '<Media %r>' % self.url
-
-class Image(Media):
-	def __repr__(self):
-		return '<Image %r>' % self.url
-
-class Video(Media):
-	def __repr__(self):
-		return '<Video %r>' % self.url
-
-class Page(db.Model):
-	id = db.Column(db.Integer, primary_key=True)
-	title = db.Column(db.String(200))
-	text = db.Column(db.Text)
-	slug = db.Column(db.String(100))
-
-	def __init__(self, title, text, slug):
-		self.title = title
-		self.text = text
-		self.slug = slug
-
 
 if __name__ == '__main__':
 	app.run()
